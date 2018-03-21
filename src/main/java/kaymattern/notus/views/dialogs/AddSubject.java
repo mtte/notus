@@ -1,8 +1,7 @@
 package kaymattern.notus.views.dialogs;
 
 import javafx.fxml.FXML;
-
-import java.awt.*;
+import javafx.scene.control.TextField;
 
 public class AddSubject {
 
