@@ -25,6 +25,7 @@ public class Notus extends Application {
 
     public Notus() {
         this.db = new DataAccessor();
+        db.loadData();
     }
 
     @Override
