@@ -15,13 +15,13 @@ public class Mark {
 
     private StringProperty name;
     private ObjectProperty<LocalDate> date;
-    private IntegerProperty value;
+    private FloatProperty value;
     private FloatProperty weight;
 
-    public Mark(String name, LocalDate date, int value, float weight) {
+    public Mark(String name, LocalDate date, float value, float weight) {
         this.name = new SimpleStringProperty(name);
         this.date = new SimpleObjectProperty<>(date);
-        this.value = new SimpleIntegerProperty(value);
+        this.value = new SimpleFloatProperty(value);
         this.weight = new SimpleFloatProperty(weight);
     }
 
@@ -36,6 +36,9 @@ public class Mark {
     }
 
     public void setName(String name) {
+        if (name.length() > 100) {
+            throw new IllegalArgumentException("Length of name cannot be larger than 100");
+        }
         this.name.set(name);
     }
 
@@ -51,15 +54,15 @@ public class Mark {
         this.date.set(date);
     }
 
-    public int getValue() {
+    public float getValue() {
         return value.get();
     }
 
-    public IntegerProperty valueProperty() {
+    public FloatProperty valueProperty() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(float value) {
         this.value.set(value);
     }
 

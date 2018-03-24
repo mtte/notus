@@ -179,7 +179,7 @@ public class Database {
                     "id INTEGER PRIMARY KEY," +
                     "name VARCHAR(100) NOT NULL," +
                     "date DATE," +
-                    "value TINYINT NOT NULL," +
+                    "value FLOAT NOT NULL," +
                     "weight FLOAT NOT NULL," +
                     "subject_id INT NOT NULL," +
                     "FOREIGN KEY (subject_id) REFERENCES subject(id));");

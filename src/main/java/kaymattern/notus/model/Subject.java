@@ -10,7 +10,7 @@ import javafx.beans.property.StringProperty;
  */
 public class Subject {
 
-    private IntegerProperty id;
+    private final IntegerProperty id;
     private StringProperty name;
 
     /**
@@ -32,10 +32,6 @@ public class Subject {
         return id;
     }
 
-    public void setId(int id) {
-        this.id.set(id);
-    }
-
     public String getName() {
         return name.get();
     }
@@ -45,6 +41,9 @@ public class Subject {
     }
 
     public void setName(String name) {
+        if (name.length() > 100) {
+            throw new IllegalArgumentException("Length of name cannot be larger than 100");
+        }
         this.name.set(name);
     }
 }
