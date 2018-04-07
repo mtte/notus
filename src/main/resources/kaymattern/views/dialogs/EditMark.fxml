@@ -51,7 +51,7 @@
             <HBox alignment="CENTER_RIGHT" spacing="15.0">
                <children>
                   <Button defaultButton="true" mnemonicParsing="false" onAction="#add" text="Hinzufügen" />
-                  <Button mnemonicParsing="false" onAction="#delete" text="Löschen" />
+                  <Button mnemonicParsing="false" onAction="#delete" style="-fx-background-color: #ff000;" text="Löschen" textFill="RED" />
                   <Button cancelButton="true" mnemonicParsing="false" onAction="#cancel" text="Abbrechen" />
                </children>
             </HBox>
