@@ -15,6 +15,7 @@ import java.util.Optional;
  */
 public class ViewManager {
 
+    private App app;
     private Stage stage;
     private Map<View, Scene> sceneCache = new HashMap<>();
 
@@ -22,7 +23,8 @@ public class ViewManager {
      * Constructor.
      * @param stage The stage to show the views
      */
-    protected ViewManager(Stage stage) {
+    protected ViewManager(App app, Stage stage) {
+        this.app = app;
         this.stage = stage;
     }
 
@@ -56,6 +58,8 @@ public class ViewManager {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("kaymattern/views/SubjectOverview.fxml"));
             Parent parent = loader.load();
+            NotusController controller = loader.getController();
+            controller.setUp(this.app);
             scene = Optional.of(new Scene(parent));
         } catch (IOException e) {
             if (this.stage.getScene() == null) {

@@ -40,7 +40,7 @@ public class Notus extends Application implements App {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Notus");
 
-        this.viewManager = new ViewManager(primaryStage);
+        this.viewManager = new ViewManager(this, primaryStage);
         this.viewManager.showView(ViewManager.View.SUBJECT_OVERVIEW);
 
         primaryStage.show();
