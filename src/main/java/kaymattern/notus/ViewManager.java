@@ -3,6 +3,7 @@ package kaymattern.notus;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,8 +29,33 @@ public class ViewManager {
         this.stage = stage;
     }
 
+    /**
+     * Shows the given view.
+     * The view is shown in the primary stage or in a new stage if it is a dialog.
+     * @param view The view to show
+     */
     public void showView(View view) {
-        this.stage.setScene(getScene(view));
+        if (view.isDialog()) {
+            showDialog(view);
+        } else {
+            this.stage.setScene(getScene(view));
+            this.stage.setTitle(view.getDisplayName());
+        }
+    }
+
+    /**
+     * Shows the given view in a dialog.
+     * @param view The view to show in the dialog
+     */
+    private void showDialog(View view) {
+        Scene scene = getScene(view);
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle(view.getDisplayName());
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        dialogStage.initOwner(this.stage);
+        dialogStage.setScene(scene);
+        dialogStage.show();
     }
 
     /**
@@ -53,10 +79,10 @@ public class ViewManager {
     private Scene loadScene(View view) {
         Optional<Scene> scene = Optional.empty();
         String viewFile = String.format("kaymattern/views/%s%s.fxml",
-                view.isDialog ? "dialogs/" : "",
+                view.isDialog() ? "dialogs/" : "",
                 view.getName());
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("kaymattern/views/SubjectOverview.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(viewFile));
             Parent parent = loader.load();
             NotusController controller = loader.getController();
             controller.setUp(this.app);
@@ -68,31 +94,6 @@ public class ViewManager {
             // TODO: Give error feedback
         }
         return scene.orElse(this.stage.getScene());
-    }
-
-    /**
-     * Enum to hold all views of Notus.
-     */
-    public enum View {
-        SUBJECT_OVERVIEW("SubjectOverview", false),
-        MARK_OVERVIEW("MarkOverview", false),
-        ADD_MARK("AddMark", true),
-        EDIT_MARK("EditMark", true),
-        ADD_SUBJECT("AddSubject", true),
-        EDIT_SUBJECT("EditSubject", true);
-
-        private String name;
-        private boolean isDialog;
-
-        View(String name, boolean isDialog) {
-            this.name = name;
-            this.isDialog = isDialog;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
     }
 
 }
