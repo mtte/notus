@@ -1,9 +1,13 @@
 package kaymattern.notus.model;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * Model class to represent a subject.
@@ -12,6 +16,7 @@ public class Subject {
 
     private final IntegerProperty id;
     private StringProperty name;
+    private ObservableList<Mark> marks = FXCollections.observableArrayList();
 
     /**
      * Construnctor.
@@ -20,6 +25,14 @@ public class Subject {
     public Subject(int id, String name) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
+    }
+
+    public DoubleBinding average() {
+        return Bindings.createDoubleBinding(() -> {
+            double sum = this.marks.stream().mapToDouble(mark -> mark.getValue() * mark.getWeight()).sum();
+            double sum2 = this.marks.stream().mapToDouble(Mark::getWeight).sum();
+            return sum / sum2;
+        }, this.marks);
     }
 
     // JavaFX Properties
@@ -46,4 +59,9 @@ public class Subject {
         }
         this.name.set(name);
     }
+
+    public ObservableList<Mark> getMarks() {
+        return marks;
+    }
+
 }
