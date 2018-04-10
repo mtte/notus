@@ -1,15 +1,8 @@
 package kaymattern.notus;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import kaymattern.notus.database.DataAccessor;
-import kaymattern.notus.model.Subject;
-
-import java.util.Arrays;
 
 /**
  * Main class of the Notus application.
@@ -41,13 +34,13 @@ public class Notus extends Application implements App {
         primaryStage.setTitle("Notus");
 
         this.viewManager = new ViewManager(this, primaryStage);
-        this.viewManager.showView(ViewManager.View.SUBJECT_OVERVIEW);
+        this.viewManager.showView(View.SUBJECT_OVERVIEW);
 
         primaryStage.show();
     }
 
     @Override
-    public void showView(ViewManager.View view) {
+    public void showView(View view) {
         this.viewManager.showView(view);
     }
 

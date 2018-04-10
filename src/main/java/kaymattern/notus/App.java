@@ -11,7 +11,7 @@ public interface App {
      * Show the veiw on the main stage.
      * @param view The view to show
      */
-    void showView(ViewManager.View view);
+    void showView(View view);
 
     /**
      * Returns the data accessor of Notus.
