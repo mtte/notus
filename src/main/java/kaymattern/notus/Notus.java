@@ -48,4 +48,9 @@ public class Notus extends Application implements App {
     public DataAccessor getDataAccessor() {
         return this.db;
     }
+
+    @Override
+    public NotusController getControllerOfView(View view) {
+        return this.viewManager.getControllerOfView(view);
+    }
 }

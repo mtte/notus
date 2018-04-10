@@ -14,6 +14,13 @@ public interface App {
     void showView(View view);
 
     /**
+     * Retrieve the controller of a view.
+     * @param view The view of which to get the controller.
+     * @return The controller
+     */
+    NotusController getControllerOfView(View view);
+
+    /**
      * Returns the data accessor of Notus.
      * @return The data accessor
      */

@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * This class handles the views.
@@ -18,7 +17,7 @@ public class ViewManager {
 
     private App app;
     private Stage stage;
-    private Map<View, Scene> sceneCache = new HashMap<>();
+    private Map<View, CachedView> sceneCache = new HashMap<>();
 
     /**
      * Constructor.
@@ -38,9 +37,13 @@ public class ViewManager {
         if (view.isDialog()) {
             showDialog(view);
         } else {
-            this.stage.setScene(getScene(view));
+            this.stage.setScene(getView(view).getScene());
             this.stage.setTitle(view.getDisplayName());
         }
+    }
+
+    public NotusController getControllerOfView(View view) {
+        return getView(view).getController();
     }
 
     /**
@@ -48,7 +51,7 @@ public class ViewManager {
      * @param view The view to show in the dialog
      */
     private void showDialog(View view) {
-        Scene scene = getScene(view);
+        Scene scene = getView(view).getScene();
 
         Stage dialogStage = new Stage();
         dialogStage.setTitle(view.getDisplayName());
@@ -64,9 +67,9 @@ public class ViewManager {
      * @param view The view
      * @return The scene of the view
      */
-    private Scene getScene(View view) {
+    private CachedView getView(View view) {
         if (! sceneCache.containsKey(view)) {
-            sceneCache.put(view, loadScene(view));
+            sceneCache.put(view, loadView(view));
         }
         return sceneCache.get(view);
     }
@@ -76,8 +79,7 @@ public class ViewManager {
      * @param view The view
      * @return The loaded scene
      */
-    private Scene loadScene(View view) {
-        Optional<Scene> scene = Optional.empty();
+    private CachedView loadView(View view) {
         String viewFile = String.format("kaymattern/views/%s%s.fxml",
                 view.isDialog() ? "dialogs/" : "",
                 view.getName());
@@ -86,14 +88,32 @@ public class ViewManager {
             Parent parent = loader.load();
             NotusController controller = loader.getController();
             controller.setUp(this.app);
-            scene = Optional.of(new Scene(parent));
+            Scene scene = new Scene(parent);
+            return new CachedView(scene, controller);
         } catch (IOException e) {
-            if (this.stage.getScene() == null) {
-                throw new RuntimeException("Could not load the object hierarchy of: " + viewFile);
-            }
+            throw new RuntimeException("Could not load the object hierarchy of: " + viewFile);
             // TODO: Give error feedback
         }
-        return scene.orElse(this.stage.getScene());
+    }
+
+    private class CachedView {
+
+        private final Scene scene;
+        private final NotusController controller;
+
+        CachedView(Scene scene, NotusController controller) {
+            this.scene = scene;
+            this.controller = controller;
+        }
+
+        Scene getScene() {
+            return scene;
+        }
+
+        NotusController getController() {
+            return controller;
+        }
+
     }
 
 }
