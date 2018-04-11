@@ -79,7 +79,7 @@ public class DataAccessor {
      */
     private int getNextId(String tableName) {
         Object[][] result = database.executePreparedStatement("SELECT max(id) FROM " + tableName);
-        int maxId = (int) result[0][0];
+        int maxId = result[0][0] == null ? 1 : (int) result[0][0];
         return ++maxId;
     }
 
