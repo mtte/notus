@@ -1,6 +1,7 @@
 package kaymattern.notus.views.dialogs;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -26,7 +27,7 @@ public class AddSubject implements NotusController {
         String name = this.nameTextField.getText();
         this.app.getDataAccessor().createSubject(name);
         close();
-        // TODO: Give feedback
+        this.app.showAlert(Alert.AlertType.INFORMATION, "Status", "Fach " + name + " wurde hinzugefügt", null);
     }
 
     @Override

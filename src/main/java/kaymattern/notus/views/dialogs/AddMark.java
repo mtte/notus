@@ -2,6 +2,7 @@ package kaymattern.notus.views.dialogs;
 
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -9,6 +10,8 @@ import javafx.stage.Stage;
 import kaymattern.notus.App;
 import kaymattern.notus.NotusController;
 import kaymattern.notus.model.Subject;
+
+import java.time.LocalDate;
 
 
 public class AddMark implements NotusController {
@@ -30,7 +33,14 @@ public class AddMark implements NotusController {
 
     @FXML
     private void add() {
-        // TODO: Show add mark dialog
+        String name = nameTextField.getText();
+        LocalDate date = datePicker.getValue();
+        float value = Float.parseFloat(markTextField.getText());
+        float weight = Float.parseFloat(weightTextField.getText());
+
+        this.app.getDataAccessor().createMark(this.subject, name, date, value, weight);
+        close();
+        this.app.showAlert(Alert.AlertType.INFORMATION, "Status", "Note wurde hinzugefügt.", null);
     }
 
     public void setSubject(Subject subject) {

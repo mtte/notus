@@ -43,7 +43,7 @@ public class MarkOverview implements NotusController, Initializable {
     public void setSubject(Subject subject) {
         this.subject = subject;
         this.titleLabel.textProperty().bind(subject.nameProperty());
-        this.averageLabel.textProperty().bind(subject.average().asString());
+        this.averageLabel.textProperty().bind(subject.average().asString("%#.2f"));
         this.marksTable.setItems(subject.getMarks());
     }
 

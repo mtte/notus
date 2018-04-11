@@ -1,12 +1,12 @@
 package kaymattern.notus.database;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import kaymattern.notus.model.Mark;
 import kaymattern.notus.model.Subject;
 
 import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -43,7 +43,7 @@ public class DataAccessor {
     public void loadMarks(Subject subject) {
         Object[][] marksData = database.executePreparedStatement("SELECT id, name, date, value, weight FROM mark WHERE subject_id = ?", subject.getId());
         subject.getMarks().addAll(Arrays.stream(marksData)
-                .map(row -> new Mark((int) row[0], (String) row[1], Date.valueOf((String) row[2]).toLocalDate(), (float) row[3], (float) row[4]))
+                .map(row -> new Mark((int) row[0], (String) row[1], new Date((Long) row[2]).toLocalDate(), ((Double) row[3]).floatValue(), ((Double) row[4]).floatValue()))
                 .collect(Collectors.toCollection(FXCollections::observableSet)));
     }
 
@@ -79,7 +79,7 @@ public class DataAccessor {
      */
     private int getNextId(String tableName) {
         Object[][] result = database.executePreparedStatement("SELECT max(id) FROM " + tableName);
-        int maxId = result[0][0] == null ? 1 : (int) result[0][0];
+        int maxId = result[0][0] == null ? 0 : (int) result[0][0];
         return ++maxId;
     }
 
@@ -99,7 +99,7 @@ public class DataAccessor {
      */
     private void addMark(Subject subject, Mark mark) {
         database.executePreparedUpdate("INSERT INTO mark (id, name, value, weight, date, subject_id) VALUES (?,?,?,?,?,?)",
-                mark.getId(), mark.getName(), mark.getValue(), mark.getWeight(), mark.getDate(), subject.getId());
+                mark.getId(), mark.getName(), mark.getValue(), mark.getWeight(), Date.valueOf(mark.getDate()), subject.getId());
         subject.getMarks().add(mark);
     }
 
