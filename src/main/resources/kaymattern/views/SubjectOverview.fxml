@@ -27,7 +27,7 @@
                   <Region HBox.hgrow="ALWAYS" />
                   <Label accessibleRole="BUTTON" onMouseClicked="#add" text="+" textFill="#00aaff">
                      <font>
-                        <Font size="36.0" />
+                        <Font size="30.0" />
                      </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />

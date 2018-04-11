@@ -5,13 +5,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kaymattern.notus.views.MarkOverview">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kaymattern.notus.views.MarkOverview">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="20.0">
          <children>
@@ -19,7 +20,7 @@
                <children>
                   <Label accessibleRole="BUTTON" layoutX="585.0" layoutY="10.0" onMouseClicked="#back" text="&lt;" textFill="#00aaff">
                      <font>
-                        <Font size="36.0" />
+                        <Font size="30.0" />
                      </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -27,6 +28,13 @@
                      <padding>
                         <Insets left="5.0" right="5.0" />
                      </padding>
+                     <tooltip>
+                        <Tooltip text="Zurück">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Tooltip>
+                     </tooltip>
                   </Label>
                   <Label fx:id="titleLabel" text="Notenübersicht">
                      <font>
@@ -39,11 +47,18 @@
                   <Region HBox.hgrow="ALWAYS" />
                   <Label accessibleRole="BUTTON" onMouseClicked="#add" text="+" textFill="#00aaff">
                      <font>
-                        <Font size="36.0" />
+                        <Font size="30.0" />
                      </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip text="Note hinzufügen">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Tooltip>
+                     </tooltip>
                   </Label>
                </children>
                <padding>
@@ -56,6 +71,9 @@
                </font>
             </Label>
             <TableView fx:id="marksTable" prefHeight="200.0" prefWidth="200.0">
+              <placeholder>
+                <Label text="Keine Noten vorhanden. Füge neue Noten mit dem Plus-Button hinzu." />
+              </placeholder>
               <columns>
                 <TableColumn fx:id="nameColumn" prefWidth="100.0" text="Name" />
                 <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Datum" />
@@ -80,7 +98,7 @@
                      </font>
                   </Label>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Label fx:id="averageLabel" layoutX="20.0" layoutY="20.0" text="N/A Ø">
+                  <Label fx:id="averageLabel" layoutX="20.0" layoutY="20.0" text="NaN Ø">
                      <font>
                         <Font size="20.0" />
                      </font>
