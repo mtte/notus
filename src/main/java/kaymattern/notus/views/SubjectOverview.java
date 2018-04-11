@@ -35,9 +35,9 @@ public class SubjectOverview implements NotusController {
     private void initList() {
         this.subjectList.setItems(app.getDataAccessor().getSubjects());
         this.subjectList.setOnMouseClicked(event -> {
-            if (event.getClickCount() >= 2) {
+            if (event.getClickCount() >= 2 && this.subjectList.getSelectionModel().getSelectedItem() != null) {
                 // only when double clicked
-                openMarkView();
+                openMarkView(this.subjectList.getSelectionModel().getSelectedItem());
             }
         });
         this.subjectList.setCellFactory(l -> new SubjectListCell());
@@ -46,9 +46,9 @@ public class SubjectOverview implements NotusController {
     /**
      * Opens the mark overview of the currently selected subject.
      */
-    private void openMarkView() {
+    private void openMarkView(Subject subject) {
         MarkOverview controller = (MarkOverview) this.app.getControllerOfView(View.MARK_OVERVIEW);
-        // TODO: Set the currently selected subject
+        controller.setSubject(subject);
 
         this.app.showView(View.MARK_OVERVIEW);
     }
