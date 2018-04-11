@@ -11,6 +11,7 @@ import kaymattern.notus.NotusController;
 import kaymattern.notus.View;
 import kaymattern.notus.model.Mark;
 import kaymattern.notus.model.Subject;
+import kaymattern.notus.views.dialogs.AddMark;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -53,7 +54,10 @@ public class MarkOverview implements NotusController, Initializable {
 
     @FXML
     private void add() {
-        // TODO: show add mark dialog
+        AddMark addMarkController = (AddMark) this.app.getControllerOfView(View.ADD_MARK);
+        addMarkController.setSubject(this.subject);
+
+        this.app.showView(View.ADD_MARK);
     }
 
     @FXML

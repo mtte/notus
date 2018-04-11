@@ -14,7 +14,7 @@ import javafx.collections.ObservableList;
  */
 public class Subject {
 
-    private final IntegerProperty id;
+    private final int id;
     private StringProperty name;
     private ObservableList<Mark> marks = FXCollections.observableArrayList();
 
@@ -23,7 +23,7 @@ public class Subject {
      * @param name The name of the subject
      */
     public Subject(int id, String name) {
-        this.id = new SimpleIntegerProperty(id);
+        this.id = id;
         this.name = new SimpleStringProperty(name);
     }
 
@@ -35,14 +35,10 @@ public class Subject {
         }, this.marks);
     }
 
-    // JavaFX Properties
+    // Getter & Setter
 
     public int getId() {
-        return id.get();
-    }
-
-    public IntegerProperty idProperty() {
-        return id;
+        return this.id;
     }
 
     public String getName() {

@@ -13,19 +13,25 @@ import java.time.LocalDate;
 
 public class Mark {
 
+    private final int id;
     private StringProperty name;
     private ObjectProperty<LocalDate> date;
     private FloatProperty value;
     private FloatProperty weight;
 
-    public Mark(String name, LocalDate date, float value, float weight) {
+    public Mark(int id, String name, LocalDate date, float value, float weight) {
+        this.id = id;
         this.name = new SimpleStringProperty(name);
         this.date = new SimpleObjectProperty<>(date);
         this.value = new SimpleFloatProperty(value);
         this.weight = new SimpleFloatProperty(weight);
     }
 
-    // JavaFX Properties
+    // Getter & Setter
+
+    public int getId() {
+        return this.id;
+    }
 
     public String getName() {
         return name.get();

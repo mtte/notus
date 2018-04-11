@@ -32,9 +32,7 @@ public class DataAccessor {
         Object[][] subjectsData = database.executePreparedStatement("SELECT id, name FROM subject");
         return Arrays.stream(subjectsData)
                 .map(row -> new Subject((int) row[0], (String) row[1]))
-                .peek(subject -> subject.getMarks().addAll(
-                        new Mark("1", LocalDate.now(), 5f, 1.0f),
-                        new Mark("2", LocalDate.now(), 6f, 0.5f)))
+                .peek(this::loadMarks)
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
     }
 
@@ -42,10 +40,10 @@ public class DataAccessor {
      * Loads all marks for the given subject.
      * @param subject The subject to load the marks.
      */
-    private void loadMarks(Subject subject) {
-        Object[][] marksData = database.executePreparedStatement("SELECT name, date, value, weight FROM mark WHERE subject_id = ?", subject.getId());
+    public void loadMarks(Subject subject) {
+        Object[][] marksData = database.executePreparedStatement("SELECT id, name, date, value, weight FROM mark WHERE subject_id = ?", subject.getId());
         subject.getMarks().addAll(Arrays.stream(marksData)
-                .map(row -> new Mark((String) row[0], Date.valueOf((String) row[1]).toLocalDate(), (float) row[2], (float) row[3]))
+                .map(row -> new Mark((int) row[0], (String) row[1], Date.valueOf((String) row[2]).toLocalDate(), (float) row[3], (float) row[4]))
                 .collect(Collectors.toCollection(FXCollections::observableSet)));
     }
 
@@ -57,6 +55,12 @@ public class DataAccessor {
         int nextId = getNextId("subject");
         Subject subject = new Subject(nextId, name);
         addSubject(subject);
+    }
+
+    public void createMark(Subject subject, String name, LocalDate date, float value, float weight) {
+        int nextId = getNextId("mark");
+        Mark mark = new Mark(nextId, name, date, value, weight);
+        addMark(subject, mark);
     }
 
     /**
@@ -93,9 +97,10 @@ public class DataAccessor {
      * Adds a mark to the database.
      * @param mark The mark to add
      */
-    private void addMark(Mark mark) {
-        database.executePreparedUpdate("INSERT INTO mark (name, value, weight, date, subject_id) VALUES (?,?,?,?,?)",
-                mark.getName(), mark.getValue(), mark.getWeight(), mark.getDate());
+    private void addMark(Subject subject, Mark mark) {
+        database.executePreparedUpdate("INSERT INTO mark (id, name, value, weight, date, subject_id) VALUES (?,?,?,?,?,?)",
+                mark.getId(), mark.getName(), mark.getValue(), mark.getWeight(), mark.getDate(), subject.getId());
+        subject.getMarks().add(mark);
     }
 
     /**
