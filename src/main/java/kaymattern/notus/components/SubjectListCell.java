@@ -16,6 +16,7 @@ public class SubjectListCell extends ListCell<Subject> {
 
         // Only use the custom layout if there is a subject present
         if (subject == null) {
+            setGraphic(null);
             return;
         }
 

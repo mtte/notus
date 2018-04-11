@@ -78,6 +78,7 @@ public class MarkOverview implements NotusController, Initializable {
                 super.updateItem(date, empty);
 
                 if (date == null || empty) {
+                    setText("");
                     return;
                 }
 
@@ -93,6 +94,7 @@ public class MarkOverview implements NotusController, Initializable {
                 super.updateItem(item, empty);
 
                 if (item == null || empty) {
+                    setText("");
                     return;
                 }
 
