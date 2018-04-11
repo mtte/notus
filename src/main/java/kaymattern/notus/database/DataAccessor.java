@@ -19,7 +19,6 @@ public class DataAccessor {
     public DataAccessor() {
         this.database = new Database("notus");
         this.subjects = loadSubjects();
-        this.subjects.addListener(this::subjectsChanged);
     }
 
     public ObservableList<Subject> getSubjects() {
@@ -40,39 +39,6 @@ public class DataAccessor {
     }
 
     /**
-     * Handles all events / changes from the subject set.
-     * @param change The change that was made
-     */
-    private void subjectsChanged(ListChangeListener.Change<? extends Subject> change) {
-//        if (change.wasAdded()) {
-//            addSubject(change.getElementAdded());
-//            registerMarkListener(change.getElementAdded());
-//        } else if (change.wasRemoved()) {
-//            removeSubject(change.getElementRemoved());
-//        }
-    }
-
-    /**
-     * Handles all events / changes from a set of marks
-     * @param change The change that was made
-     */
-    private void marksChanged(ListChangeListener.Change<? extends Mark> change) {
-//        if (change.wasAdded()) {
-//            this.addMark(change.getElementAdded());
-//        } else if (change.wasRemoved()) {
-//            removeMark(change.getElementRemoved());
-//        }
-    }
-
-    /**
-     * Register the change listener for the marks of the subject.
-     * @param subject The subject
-     */
-    private void registerMarkListener(Subject subject) {
-        subject.getMarks().addListener(this::marksChanged);
-    }
-
-    /**
      * Loads all marks for the given subject.
      * @param subject The subject to load the marks.
      */
@@ -84,11 +50,33 @@ public class DataAccessor {
     }
 
     /**
+     * Create a subject and saves it to the database.
+     * @param name The name of the subhect.
+     */
+    public void createSubject(String name) {
+        int nextId = getNextId("subject");
+        Subject subject = new Subject(nextId, name);
+        addSubject(subject);
+    }
+
+    /**
      * Adds a subject to the database.
      * @param subject The subject to add
      */
     private void addSubject(Subject subject) {
         database.executePreparedUpdate("INSERT INTO subject (name) VALUES (?)", subject.getName());
+        this.subjects.add(subject);
+    }
+
+    /**
+     * Returns the next available id of a table
+     * @param tableName The table
+     * @return The next id
+     */
+    private int getNextId(String tableName) {
+        Object[][] result = database.executePreparedStatement("SELECT max(id) FROM " + tableName);
+        int maxId = (int) result[0][0];
+        return ++maxId;
     }
 
     /**
