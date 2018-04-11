@@ -11,4 +11,10 @@ public interface NotusController {
      */
     void setUp(App app);
 
+    /**
+     * Call this method when the view is entered / shown.
+     * As default the it does nothing.
+     */
+    default void entered() {}
+
 }

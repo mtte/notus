@@ -34,11 +34,18 @@ public class ViewManager {
      * @param view The view to show
      */
     public void showView(View view) {
+        CachedView cachedView = getView(view);
+
+        cachedView.getController().entered();
+
+        Scene scene = cachedView.getScene();
+        String title = view.getDisplayName();
+
         if (view.isDialog()) {
-            showDialog(view);
+            showDialog(scene, title);
         } else {
-            this.stage.setScene(getView(view).getScene());
-            this.stage.setTitle(view.getDisplayName());
+            this.stage.setScene(scene);
+            this.stage.setTitle(title);
         }
     }
 
@@ -47,14 +54,12 @@ public class ViewManager {
     }
 
     /**
-     * Shows the given view in a dialog.
-     * @param view The view to show in the dialog
+     * Shows the given scene in a dialog.
+     * @param scene The scene to show in the dialog
      */
-    private void showDialog(View view) {
-        Scene scene = getView(view).getScene();
-
+    private void showDialog(Scene scene, String title) {
         Stage dialogStage = new Stage();
-        dialogStage.setTitle(view.getDisplayName());
+        dialogStage.setTitle(title);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.initOwner(this.stage);
         dialogStage.setScene(scene);

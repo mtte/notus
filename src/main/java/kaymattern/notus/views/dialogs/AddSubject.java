@@ -33,4 +33,9 @@ public class AddSubject implements NotusController {
     public void setUp(App app) {
         this.app = app;
     }
+
+    @Override
+    public void entered() {
+        this.nameTextField.clear();
+    }
 }
