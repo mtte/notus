@@ -1,5 +1,6 @@
 package kaymattern.notus;
 
+import javafx.scene.control.Alert;
 import kaymattern.notus.database.DataAccessor;
 
 /**
@@ -8,10 +9,19 @@ import kaymattern.notus.database.DataAccessor;
 public interface App {
 
     /**
-     * Show the veiw on the main stage.
+     * Show the view on the main stage.
      * @param view The view to show
      */
     void showView(View view);
+
+    /**
+     * Show a dialog on the main stage.
+     * @param alertType The type of the alert.
+     * @param title The title of the alert.
+     * @param headerText The header text of the alert.
+     * @param contentText The content of the alert.
+     */
+    void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText);
 
     /**
      * Retrieve the controller of a view.

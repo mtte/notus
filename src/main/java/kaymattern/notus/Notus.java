@@ -1,6 +1,7 @@
 package kaymattern.notus;
 
 import javafx.application.Application;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import kaymattern.notus.database.DataAccessor;
 
@@ -37,6 +38,11 @@ public class Notus extends Application implements App {
         this.viewManager.showView(View.SUBJECT_OVERVIEW);
 
         primaryStage.show();
+    }
+
+    @Override
+    public void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
+        this.viewManager.showAlert(alertType, title, headerText, contentText);
     }
 
     @Override

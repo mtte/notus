@@ -1,11 +1,14 @@
 package kaymattern.notus;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +36,7 @@ public class ViewManager {
      * The view is shown in the primary stage or in a new stage if it is a dialog.
      * @param view The view to show
      */
-    public void showView(View view) {
+    protected void showView(View view) {
         CachedView cachedView = getView(view);
 
         cachedView.getController().entered();
@@ -49,8 +52,29 @@ public class ViewManager {
         }
     }
 
-    public NotusController getControllerOfView(View view) {
+    /**
+     * Retrieve the controller of a view.
+     * @param view The view of which to get the controller.
+     * @return The controller
+     */
+    protected NotusController getControllerOfView(View view) {
         return getView(view).getController();
+    }
+
+    /**
+     * Show a dialog on the main stage.
+     * @param alertType The type of the alert.
+     * @param title The title of the alert.
+     * @param headerText The header text of the alert.
+     * @param contentText The content of the alert.
+     */
+    protected void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.initOwner(this.stage);
+        alert.showAndWait();
     }
 
     /**
@@ -96,11 +120,17 @@ public class ViewManager {
             Scene scene = new Scene(parent);
             return new CachedView(scene, controller);
         } catch (IOException e) {
-            throw new RuntimeException("Could not load the object hierarchy of: " + viewFile);
-            // TODO: Give error feedback
+            this.app.showAlert(Alert.AlertType.ERROR, "Error", "Ein Fehler ist aufgetreten: Die View kann nicht angezeigt werden.", "Das Programm wird beendet.");
+            e.printStackTrace();
+            Platform.exit();
+            return null;
         }
     }
 
+    /**
+     * Container object that holds a loaded view.
+     * It has the scene and the controller of the view.
+     */
     private class CachedView {
 
         private final Scene scene;
