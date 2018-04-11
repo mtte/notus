@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -131,6 +130,13 @@ public class Database {
         return numberOfArguments == sql.length() - sql.replace("?", "").length();
     }
 
+    /**
+     * Fills up a prepared statement.
+     * The prepared statement has to be valid.
+     * @param preparedStatement The prepared statement
+     * @param args The arguments to fill the statement
+     * @throws SQLException if a database access error occurs or the type is unknown
+     */
     private void fillPreparedStatement(PreparedStatement preparedStatement, Object... args) throws SQLException {
         for (int i = 1; i <= args.length; i++) {
             Object arg = args[i - 1];
@@ -138,14 +144,22 @@ public class Database {
                 preparedStatement.setString(i, (String) arg);
             } else if (arg instanceof Integer) {
                 preparedStatement.setInt(i, (Integer) arg);
-            } else if (arg instanceof LocalDate) {
-                preparedStatement.setDate(i , Date.valueOf((LocalDate) arg));
+            } else if (arg instanceof Date) {
+                preparedStatement.setDate(i , (Date) arg);
+            } else if (arg instanceof Float) {
+                preparedStatement.setFloat(i, (Float) arg);
             } else {
                 throw new SQLException("Unhandled type found!");
             }
         }
     }
 
+    /**
+     * Converts a result set to an object array.
+     * @param result The result set
+     * @return All values of the result set as object array
+     * @throws SQLException if a database access error occurs
+     */
     private Object[][] convertResultSet(ResultSet result) throws SQLException {
         ResultSetMetaData metaData = result.getMetaData();
         int columns = metaData.getColumnCount();
@@ -153,7 +167,7 @@ public class Database {
         while (result.next()) {
             Object[] row = new Object[columns];
             for (int i = 1; i <= columns; i++) {
-                row[i -1] = result.getObject(i);
+                row[i - 1] = result.getObject(i);
             }
             data.add(row);
         }
@@ -178,9 +192,9 @@ public class Database {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS mark (" +
                     "id INTEGER PRIMARY KEY," +
                     "name VARCHAR(100) NOT NULL," +
-                    "date DATE," +
-                    "value FLOAT NOT NULL," +
-                    "weight FLOAT NOT NULL," +
+                    "date DATE NOT NULL," +
+                    "value REAL NOT NULL," +
+                    "weight REAL NOT NULL," +
                     "subject_id INT NOT NULL," +
                     "FOREIGN KEY (subject_id) REFERENCES subject(id));");
 
