@@ -7,6 +7,7 @@ import kaymattern.notus.NotusController;
 import kaymattern.notus.View;
 import kaymattern.notus.components.SubjectListCell;
 import kaymattern.notus.model.Subject;
+import kaymattern.notus.views.dialogs.EditSubject;
 
 public class SubjectOverview implements NotusController {
 
@@ -19,7 +20,20 @@ public class SubjectOverview implements NotusController {
      */
     @FXML
     private void add() {
-        app.showView(View.ADD_SUBJECT);
+        this.app.showView(View.ADD_SUBJECT);
+    }
+
+    /**
+     * Shows the edit subject dialog.
+     */
+    @FXML
+    private void edit() {
+        if (this.getSubject() != null) {
+            EditSubject editSubjectController = (EditSubject) this.app.getControllerOfView(View.EDIT_SUBJECT);
+            editSubjectController.setSubject(this.getSubject());
+
+            this.app.showView(View.EDIT_SUBJECT);
+        }
     }
 
     @Override
@@ -35,9 +49,9 @@ public class SubjectOverview implements NotusController {
     private void initList() {
         this.subjectList.setItems(app.getDataAccessor().getSubjects());
         this.subjectList.setOnMouseClicked(event -> {
-            if (event.getClickCount() >= 2 && this.subjectList.getSelectionModel().getSelectedItem() != null) {
+            if (event.getClickCount() >= 2 && this.getSubject() != null) {
                 // only when double clicked
-                openMarkView(this.subjectList.getSelectionModel().getSelectedItem());
+                openMarkView(this.getSubject());
             }
         });
         this.subjectList.setCellFactory(l -> new SubjectListCell());
@@ -52,5 +66,12 @@ public class SubjectOverview implements NotusController {
 
         this.app.showView(View.MARK_OVERVIEW);
     }
+
+    /**
+     * Returns the current selected subject or null if there is none.
+     */
+     private Subject getSubject() {
+         return this.subjectList.getSelectionModel().getSelectedItem();
+     }
 
 }

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kaymattern.notus.views.dialogs.EditSubject">
+<AnchorPane fx:id="root" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kaymattern.notus.views.dialogs.EditSubject">
    <children>
       <VBox prefHeight="200.0" prefWidth="400.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
          <children>
@@ -44,9 +44,9 @@
             </VBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                <children>
-                  <Button defaultButton="true" mnemonicParsing="false" onAction="#add" text="Speichern" />
+                  <Button defaultButton="true" mnemonicParsing="false" onAction="#edit" text="Speichern" />
                   <Button mnemonicParsing="false" onAction="#delete" text="Löschen" textFill="RED" />
-                  <Button cancelButton="true" mnemonicParsing="false" onAction="#cancel" text="Abbrechen" />
+                  <Button cancelButton="true" mnemonicParsing="false" onAction="#close" text="Abbrechen" />
                </children>
             </HBox>
          </children>
