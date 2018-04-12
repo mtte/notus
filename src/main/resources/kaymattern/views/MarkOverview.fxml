@@ -2,7 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.Tooltip?>
@@ -12,103 +17,128 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kaymattern.notus.views.MarkOverview">
-   <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="20.0">
+<ScrollPane fx:id="root" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kaymattern.notus.views.MarkOverview">
+  <content>
+    <AnchorPane fx:id="container">
          <children>
-            <HBox alignment="CENTER_LEFT">
+            <VBox fx:id="content" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label accessibleRole="BUTTON" layoutX="585.0" layoutY="10.0" onMouseClicked="#back" text="&lt;" textFill="#00aaff">
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Label accessibleRole="BUTTON" layoutX="585.0" layoutY="10.0" onMouseClicked="#back" text="&lt;" textFill="#00aaff">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                           <tooltip>
+                              <Tooltip text="Zurück">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </Label>
+                        <Label fx:id="titleLabel" text="Notenübersicht">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label accessibleRole="BUTTON" onMouseClicked="#add" text="+" textFill="#00aaff">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <tooltip>
+                              <Tooltip text="Note hinzufügen">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Label text="Noten">
                      <font>
-                        <Font size="30.0" />
+                        <Font size="24.0" />
                      </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TableView fx:id="marksTable" prefHeight="200.0" prefWidth="200.0">
+                     <placeholder>
+                        <Label text="Keine Noten vorhanden. Füge neue Noten mit dem Plus-Button hinzu." />
+                     </placeholder>
+                     <columns>
+                        <TableColumn fx:id="nameColumn" prefWidth="100.0" text="Name" />
+                        <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Datum" />
+                        <TableColumn fx:id="markColumn" prefWidth="75.0" text="Note" />
+                        <TableColumn fx:id="weightColumn" prefWidth="75.0" text="Gewichtung" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </TableView>
+                  <HBox style="-fx-background-color: #eeee; -fx-border-color: #1f1f1f; -fx-border-radius: 8;">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <children>
+                        <Label text="Durchschnitt:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="averageLabel" layoutX="20.0" layoutY="20.0" text="NaN">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
                      <padding>
-                        <Insets left="5.0" right="5.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
-                     <tooltip>
-                        <Tooltip text="Zurück">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Tooltip>
-                     </tooltip>
-                  </Label>
-                  <Label fx:id="titleLabel" text="Notenübersicht">
+                  </HBox>
+                  <Label layoutX="10.0" layoutY="73.0" text="Analyse">
                      <font>
-                        <Font size="36.0" />
+                        <Font size="24.0" />
                      </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                   </Label>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Label accessibleRole="BUTTON" onMouseClicked="#add" text="+" textFill="#00aaff">
-                     <font>
-                        <Font size="30.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <tooltip>
-                        <Tooltip text="Note hinzufügen">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Tooltip>
-                     </tooltip>
-                  </Label>
+                  <LineChart fx:id="lineChart" legendVisible="false" title="Noten Entwicklung">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </LineChart>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <PieChart fx:id="markDistribution" title="Notenverteilung" />
+                        <PieChart fx:id="widthDistribution" title="Gewichtungsverteilung" />
+                     </children>
+                  </HBox>
                </children>
-               <padding>
-                  <Insets bottom="10.0" />
-               </padding>
-            </HBox>
-            <Label text="Noten">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <TableView fx:id="marksTable" prefHeight="200.0" prefWidth="200.0">
-              <placeholder>
-                <Label text="Keine Noten vorhanden. Füge neue Noten mit dem Plus-Button hinzu." />
-              </placeholder>
-              <columns>
-                <TableColumn fx:id="nameColumn" prefWidth="100.0" text="Name" />
-                <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Datum" />
-                  <TableColumn fx:id="markColumn" prefWidth="75.0" text="Note" />
-                  <TableColumn fx:id="weightColumn" prefWidth="75.0" text="Gewichtung" />
-              </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-               <VBox.margin>
-                  <Insets bottom="5.0" top="5.0" />
-               </VBox.margin>
-            </TableView>
-            <HBox style="-fx-background-color: #eeee; -fx-border-color: #1f1f1f; -fx-border-radius: 8;">
-               <VBox.margin>
-                  <Insets bottom="5.0" top="5.0" />
-               </VBox.margin>
-               <children>
-                  <Label text="Durchschnitt:">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Label fx:id="averageLabel" layoutX="20.0" layoutY="20.0" text="NaN Ø">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </HBox>
-         </children>
-      </VBox>
-   </children>
-</AnchorPane>
+            </VBox>
+         </children></AnchorPane>
+  </content>
+</ScrollPane>

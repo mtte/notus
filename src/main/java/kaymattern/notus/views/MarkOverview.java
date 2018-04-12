@@ -2,10 +2,13 @@ package kaymattern.notus.views;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.Region;
 import kaymattern.notus.App;
 import kaymattern.notus.NotusController;
 import kaymattern.notus.View;
@@ -20,6 +23,10 @@ import java.util.ResourceBundle;
 
 public class MarkOverview implements NotusController, Initializable {
 
+    @FXML private Region root;
+    @FXML private Region content;
+    @FXML private Region container;
+
     @FXML private Label averageLabel;
     @FXML private Label titleLabel;
     @FXML private TableView<Mark> marksTable;
@@ -27,12 +34,18 @@ public class MarkOverview implements NotusController, Initializable {
     @FXML private TableColumn<Mark, LocalDate> dateColumn;
     @FXML private TableColumn<Mark, Float> markColumn;
     @FXML private TableColumn<Mark, Float> weightColumn;
+    @FXML private LineChart<String, Integer> lineChart;
+    @FXML private PieChart markDistribution;
+    @FXML private PieChart weightDistribution;
 
     private App app;
     private Subject subject;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        container.prefWidthProperty().bind(root.widthProperty());
+        content.prefWidthProperty().bind(container.widthProperty());
+
         initializeTableView();
     }
 
