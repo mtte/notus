@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kaymattern.notus.views.dialogs.EditSubject">
+<AnchorPane fx:id="root" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kaymattern.notus.views.dialogs.EditSubject">
    <children>
       <VBox prefHeight="200.0" prefWidth="400.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
          <children>
@@ -25,7 +25,7 @@
                   <GridPane>
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="95.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="231.0" minWidth="10.0" prefWidth="205.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="205.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints />
