@@ -41,8 +41,8 @@ public class Notus extends Application implements App {
     }
 
     @Override
-    public void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
-        this.viewManager.showAlert(alertType, title, headerText, contentText);
+    public boolean showAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
+        return this.viewManager.showAlert(alertType, title, headerText, contentText);
     }
 
     @Override

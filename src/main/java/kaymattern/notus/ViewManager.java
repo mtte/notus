@@ -5,13 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This class handles the views.
@@ -68,13 +69,17 @@ public class ViewManager {
      * @param headerText The header text of the alert.
      * @param contentText The content of the alert.
      */
-    protected void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
+    protected boolean showAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
         alert.initOwner(this.stage);
-        alert.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            return true;
+        }
+        return false;
     }
 
     /**

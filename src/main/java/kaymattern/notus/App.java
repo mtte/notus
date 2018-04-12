@@ -16,12 +16,13 @@ public interface App {
 
     /**
      * Show a dialog on the main stage.
-     * @param alertType The type of the alert.
-     * @param title The title of the alert.
-     * @param headerText The header text of the alert.
-     * @param contentText The content of the alert.
+     * @param alertType The type of the alert
+     * @param title The title of the alert
+     * @param headerText The header text of the alert
+     * @param contentText The content of the alert
+     * @return If the user clicked OK
      */
-    void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText);
+    boolean showAlert(Alert.AlertType alertType, String title, String headerText, String contentText);
 
     /**
      * Retrieve the controller of a view.
