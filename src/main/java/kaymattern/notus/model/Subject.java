@@ -1,9 +1,8 @@
 package kaymattern.notus.model;
 
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -16,7 +15,7 @@ public class Subject {
 
     private final int id;
     private StringProperty name;
-    private ObservableList<Mark> marks = FXCollections.observableArrayList();
+    private ObservableList<Mark> marks = FXCollections.observableArrayList(mark -> new Observable[] { mark.valueProperty(), mark.weightProperty() });
 
     /**
      * Construnctor.
