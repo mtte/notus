@@ -36,8 +36,8 @@ public class EditSubject implements NotusController {
 
         if (delete) {
             this.app.getDataAccessor().removeSubject(this.subject);
+            close();
         }
-        close();
     }
 
     @FXML

@@ -15,6 +15,7 @@ import kaymattern.notus.View;
 import kaymattern.notus.model.Mark;
 import kaymattern.notus.model.Subject;
 import kaymattern.notus.views.dialogs.AddMark;
+import kaymattern.notus.views.dialogs.EditMark;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -78,6 +79,21 @@ public class MarkOverview implements NotusController, Initializable {
         this.app.showView(View.SUBJECT_OVERVIEW);
     }
 
+    private void edit(Mark mark) {
+        EditMark editMarkController = (EditMark) this.app.getControllerOfView(View.EDIT_MARK);
+        editMarkController.setData(this.subject, mark);
+
+        this.app.showView(View.EDIT_MARK);
+    }
+
+    /**
+     * Returns the current selected mark or null if there is none.
+     * @return current selected mark
+     */
+    private Mark getMark() {
+        return this.marksTable.getSelectionModel().getSelectedItem();
+    }
+
     /**
      * Initializes the columns of the marks table view.
      */
@@ -116,6 +132,12 @@ public class MarkOverview implements NotusController, Initializable {
                 }
 
                 setText(String.format("%.0f%%", item * 100));
+            }
+        });
+
+        this.marksTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() >= 2 && getMark() != null) {
+                edit(getMark());
             }
         });
 

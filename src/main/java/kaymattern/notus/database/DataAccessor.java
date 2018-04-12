@@ -93,12 +93,11 @@ public class DataAccessor {
     /**
      * Edit a subject.
      * @param subject The subject to edit
-     * @param newName The new name, if none then null
+     * @param newName The new name
      */
     public void editSubject(Subject subject, String newName) {
-        Optional<String> name = Optional.ofNullable(newName);
-        database.executePreparedUpdate("UPDATE subject SET name = ? WHERE id = ?", name.orElse(subject.getName()), subject.getId());
-        name.ifPresent(subject::setName);
+        database.executePreparedUpdate("UPDATE subject SET name = ? WHERE id = ?", newName, subject.getId());
+        subject.setName(newName);
     }
 
     /**
@@ -129,7 +128,7 @@ public class DataAccessor {
         if (! subject.getMarks().contains(mark)) {
             throw new IllegalArgumentException("Mark must belong to the given subject!");
         }
-        database.executePreparedUpdate("REMOVE FROM mark WHERE id = ?", mark.getId());
+        database.executePreparedUpdate("DELETE FROM mark WHERE id = ?", mark.getId());
         subject.getMarks().remove(mark);
     }
 
@@ -137,28 +136,23 @@ public class DataAccessor {
      * Edit a mark.
      * @param subject The subject of the mark
      * @param mark The mark to edit
-     * @param newName A new name, if none then null
-     * @param newDate A new date, if none then null
-     * @param newValue A new value, if none then null
-     * @param newWeight A new weight, if none then null
+     * @param newName A new name
+     * @param newDate A new date
+     * @param newValue A new value
+     * @param newWeight A new weight
      */
     public void editMark(Subject subject, Mark mark, String newName, LocalDate newDate, Float newValue, Float newWeight) {
         if (! subject.getMarks().contains(mark)) {
             throw new IllegalArgumentException("Mark must belong to the given subject!");
         }
 
-        Optional<String> name = Optional.ofNullable(newName);
-        Optional<LocalDate> date = Optional.ofNullable(newDate);
-        Optional<Float> value = Optional.ofNullable(newValue);
-        Optional<Float> weight = Optional.ofNullable(newWeight);
-
         database.executePreparedUpdate("UPDATE mark SET name = ?, date = ?, value = ?, weight = ? WHERE id = ?",
-                name.orElse(mark.getName()), Date.valueOf(date.orElse(mark.getDate())), value.orElse(mark.getValue()), weight.orElse(mark.getWeight()));
+                newName, Date.valueOf(newDate), newValue, newWeight, mark.getId());
 
-        name.ifPresent(mark::setName);
-        date.ifPresent(mark::setDate);
-        value.ifPresent(mark::setValue);
-        weight.ifPresent(mark::setWeight);
+        mark.setName(newName);
+        mark.setDate(newDate);
+        mark.setValue(newValue);
+        mark.setWeight(newWeight);
 
     }
 

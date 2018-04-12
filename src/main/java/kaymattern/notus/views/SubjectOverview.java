@@ -69,6 +69,7 @@ public class SubjectOverview implements NotusController {
 
     /**
      * Returns the current selected subject or null if there is none.
+     * @return current selected subject
      */
      private Subject getSubject() {
          return this.subjectList.getSelectionModel().getSelectedItem();
