@@ -6,9 +6,9 @@ import kaymattern.notus.model.Mark;
 import kaymattern.notus.model.Subject;
 
 import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DataAccessor {
@@ -23,6 +23,18 @@ public class DataAccessor {
 
     public ObservableList<Subject> getSubjects() {
         return this.subjects;
+    }
+
+
+    /**
+     * Returns the next available id of a table
+     * @param tableName The table
+     * @return The next id
+     */
+    private int getNextId(String tableName) {
+        Object[][] result = database.executePreparedStatement("SELECT max(id) FROM " + tableName);
+        int maxId = result[0][0] == null ? 0 : (int) result[0][0];
+        return ++maxId;
     }
 
     /**
@@ -57,12 +69,6 @@ public class DataAccessor {
         addSubject(subject);
     }
 
-    public void createMark(Subject subject, String name, LocalDate date, float value, float weight) {
-        int nextId = getNextId("mark");
-        Mark mark = new Mark(nextId, name, date, value, weight);
-        addMark(subject, mark);
-    }
-
     /**
      * Adds a subject to the database.
      * @param subject The subject to add
@@ -73,28 +79,39 @@ public class DataAccessor {
     }
 
     /**
-     * Returns the next available id of a table
-     * @param tableName The table
-     * @return The next id
-     */
-    private int getNextId(String tableName) {
-        Object[][] result = database.executePreparedStatement("SELECT max(id) FROM " + tableName);
-        int maxId = result[0][0] == null ? 0 : (int) result[0][0];
-        return ++maxId;
-    }
-
-    /**
      * Remove a subject from the database.
      * <strong>Note:</strong> the marks of the subject are removed too.
      * @param subject The subject to remove
      */
-    private void removeSubject(Subject subject) {
-        database.executePreparedUpdate("REMOVE FROM subject WHERE subject_id = ?", subject.getId());
-        database.executePreparedUpdate("REMOVE FORM mark WHERE subject_id = ?", subject.getId());
+    public void removeSubject(Subject subject) {
+        database.executePreparedUpdate("DELETE FROM subject WHERE id = ?", subject.getId());
+        database.executePreparedUpdate("DELETE FROM mark WHERE subject_id = ?", subject.getId());
+        subject.getMarks().clear();
+        this.subjects.remove(subject);
     }
 
     /**
-     * Adds a mark to the database.
+     * Edit a subject.
+     * @param subject The subject to edit
+     * @param newName The new name, if none then null
+     */
+    public void editSubject(Subject subject, String newName) {
+        Optional<String> name = Optional.ofNullable(newName);
+        database.executePreparedUpdate("UPDATE subject SET name = ? WHERE id = ?", name.orElse(subject.getName()), subject.getId());
+        name.ifPresent(subject::setName);
+    }
+
+    /**
+     * Create a subject and save it to the database.
+     */
+    public void createMark(Subject subject, String name, LocalDate date, float value, float weight) {
+        int nextId = getNextId("mark");
+        Mark mark = new Mark(nextId, name, date, value, weight);
+        addMark(subject, mark);
+    }
+
+    /**
+     * Adds a mark.
      * @param mark The mark to add
      */
     private void addMark(Subject subject, Mark mark) {
@@ -104,11 +121,45 @@ public class DataAccessor {
     }
 
     /**
-     * Removes a mark from the database.
+     * Removes a mark.
+     * @param subject The subject of the mark
      * @param mark The mark to remove
      */
-    private void removeMark(Mark mark) {
-        database.executePreparedUpdate("REMOVE FROM mark WHERE id = ?");
+    public void removeMark(Subject subject, Mark mark) {
+        if (! subject.getMarks().contains(mark)) {
+            throw new IllegalArgumentException("Mark must belong to the given subject!");
+        }
+        database.executePreparedUpdate("REMOVE FROM mark WHERE id = ?", mark.getId());
+        subject.getMarks().remove(mark);
+    }
+
+    /**
+     * Edit a mark.
+     * @param subject The subject of the mark
+     * @param mark The mark to edit
+     * @param newName A new name, if none then null
+     * @param newDate A new date, if none then null
+     * @param newValue A new value, if none then null
+     * @param newWeight A new weight, if none then null
+     */
+    public void editMark(Subject subject, Mark mark, String newName, LocalDate newDate, Float newValue, Float newWeight) {
+        if (! subject.getMarks().contains(mark)) {
+            throw new IllegalArgumentException("Mark must belong to the given subject!");
+        }
+
+        Optional<String> name = Optional.ofNullable(newName);
+        Optional<LocalDate> date = Optional.ofNullable(newDate);
+        Optional<Float> value = Optional.ofNullable(newValue);
+        Optional<Float> weight = Optional.ofNullable(newWeight);
+
+        database.executePreparedUpdate("UPDATE mark SET name = ?, date = ?, value = ?, weight = ? WHERE id = ?",
+                name.orElse(mark.getName()), Date.valueOf(date.orElse(mark.getDate())), value.orElse(mark.getValue()), weight.orElse(mark.getWeight()));
+
+        name.ifPresent(mark::setName);
+        date.ifPresent(mark::setDate);
+        value.ifPresent(mark::setValue);
+        weight.ifPresent(mark::setWeight);
+
     }
 
 }
