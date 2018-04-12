@@ -22,15 +22,16 @@ public class SubjectListCell extends ListCell<Subject> {
 
         HBox hBox = new HBox();
 
-        Label name = new Label(subject.getName());
+        Label name = new Label();
+        name.textProperty().bind(subject.nameProperty());
         name.setFont(new Font(16));
 
         Region region = new Region();
         HBox.setHgrow(region, Priority.ALWAYS);
 
         Label average = new Label();
-        average.setFont(new Font(16));
         average.textProperty().bind(subject.average().asString("%#.2f"));
+        average.setFont(new Font(16));
 
         hBox.getChildren().addAll(name, region, average);
         hBox.setPadding(new Insets(5));
