@@ -3,8 +3,6 @@ package kaymattern.notus.views;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.geometry.Side;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
@@ -14,19 +12,15 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Region;
-import kaymattern.notus.App;
-import kaymattern.notus.NotusController;
 import kaymattern.notus.View;
 import kaymattern.notus.model.Mark;
 import kaymattern.notus.model.Subject;
 import kaymattern.notus.views.dialogs.AddMark;
 import kaymattern.notus.views.dialogs.EditMark;
 
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class MarkOverview extends AbstractNotusController {

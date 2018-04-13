@@ -8,7 +8,6 @@ import kaymattern.notus.model.Subject;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DataAccessor {

@@ -1,16 +1,13 @@
 package kaymattern.notus.views.dialogs;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import kaymattern.notus.validation.Validator;
 import kaymattern.notus.views.AbstractNotusController;
 
-import java.net.URL;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 public abstract class AbstractDialogController extends AbstractNotusController {
 
