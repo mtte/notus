@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import kaymattern.notus.App;
 import kaymattern.notus.NotusController;
+import kaymattern.notus.validation.Validator;
 import kaymattern.notus.View;
 import kaymattern.notus.components.SubjectListCell;
 import kaymattern.notus.model.Subject;

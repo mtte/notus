@@ -10,6 +10,10 @@ import kaymattern.notus.App;
 import kaymattern.notus.NotusController;
 import kaymattern.notus.model.Mark;
 import kaymattern.notus.model.Subject;
+import kaymattern.notus.validation.ValidationType;
+import kaymattern.notus.validation.Validator;
+
+import java.util.Optional;
 
 public class EditMark implements NotusController {
 
@@ -22,6 +26,7 @@ public class EditMark implements NotusController {
     private App app;
     private Subject subject;
     private Mark mark;
+    private Validator validator;
 
     @FXML
     private void close() {
@@ -31,6 +36,15 @@ public class EditMark implements NotusController {
 
     @FXML
     private void edit() {
+        Optional<String> validationResult = validator.validate();
+        if (validationResult.isPresent()) {
+            this.app.showAlert(Alert.AlertType.ERROR,
+                    "Validierung fehlgeschlagen",
+                    "Nicht alle Eingabefelder sind richtig ausgefüllt.",
+                    validationResult.get());
+            return;
+        }
+
         if (hasChanges()) {
             this.app.getDataAccessor().editMark(this.subject,
                     this.mark,
@@ -79,6 +93,14 @@ public class EditMark implements NotusController {
     @Override
     public void setUp(App app) {
         this.app = app;
+
+        this.validator = new Validator()
+                .register(ValidationType.TEXT, this.nameTextField.textProperty(), "Name")
+                .register(ValidationType.NOT_NULL, this.datePicker.valueProperty(), "Datum")
+                .register(ValidationType.TEXT, this.valueTextField.textProperty(), "Note")
+                .register(ValidationType.NUMBER, this.valueTextField.textProperty(), "Note")
+                .register(ValidationType.TEXT, this.weightTextField.textProperty(), "Gewichtung")
+                .register(ValidationType.NUMBER, this.weightTextField.textProperty(), "Gewichtung");
     }
 
     @Override

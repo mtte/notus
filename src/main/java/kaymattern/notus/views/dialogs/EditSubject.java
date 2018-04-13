@@ -8,6 +8,10 @@ import javafx.stage.Stage;
 import kaymattern.notus.App;
 import kaymattern.notus.NotusController;
 import kaymattern.notus.model.Subject;
+import kaymattern.notus.validation.ValidationType;
+import kaymattern.notus.validation.Validator;
+
+import java.util.Optional;
 
 public class EditSubject implements NotusController {
 
@@ -16,6 +20,7 @@ public class EditSubject implements NotusController {
 
     private App app;
     private Subject subject;
+    private Validator validator;
 
     public void setSubject(Subject subject) {
         this.subject = subject;
@@ -43,6 +48,15 @@ public class EditSubject implements NotusController {
     @FXML
     private void edit() {
         if (! this.subject.getName().equals(this.nameTextField.getText())) {
+            Optional<String> validationResult = validator.validate();
+            if (validationResult.isPresent()) {
+                this.app.showAlert(Alert.AlertType.ERROR,
+                        "Validierung fehlgeschlagen",
+                        "Nicht alle Eingabefelder sind richtig ausgefüllt.",
+                        validationResult.get());
+                return;
+            }
+
             this.app.getDataAccessor().editSubject(this.subject, this.nameTextField.getText());
         }
         close();
@@ -51,6 +65,8 @@ public class EditSubject implements NotusController {
     @Override
     public void setUp(App app) {
         this.app = app;
+        
+        this.validator = new Validator().register(ValidationType.TEXT, this.nameTextField.textProperty(), "Name");
     }
 
     @Override
