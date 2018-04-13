@@ -33,9 +33,9 @@ public enum ValidationType {
         String content = (String) value.getValue();
         try {
             Float.parseFloat(content);
-            return true;
-        } catch (NumberFormatException e) {
             return false;
+        } catch (NumberFormatException e) {
+            return true;
         }
     }
 
