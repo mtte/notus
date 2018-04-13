@@ -49,7 +49,11 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <ListView fx:id="subjectList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="subjectList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <placeholder>
+                  <Label text="Keine Fächer vorhanden. Füge neue Fächer mit dem Plus-Button hinzu." />
+               </placeholder>
+            </ListView>
          </children>
       </VBox>
    </children>

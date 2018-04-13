@@ -1,9 +1,13 @@
 package kaymattern.notus.views;
 
+import javafx.beans.InvalidationListener;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -20,7 +24,9 @@ import kaymattern.notus.views.dialogs.EditMark;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class MarkOverview implements NotusController, Initializable {
 
@@ -35,7 +41,8 @@ public class MarkOverview implements NotusController, Initializable {
     @FXML private TableColumn<Mark, LocalDate> dateColumn;
     @FXML private TableColumn<Mark, Float> markColumn;
     @FXML private TableColumn<Mark, Float> weightColumn;
-    @FXML private LineChart<String, Integer> lineChart;
+    @FXML private LineChart<String, Float> lineChart;
+    @FXML private CategoryAxis categoryAxis;
     @FXML private PieChart markDistribution;
     @FXML private PieChart weightDistribution;
 
@@ -84,6 +91,24 @@ public class MarkOverview implements NotusController, Initializable {
         editMarkController.setData(this.subject, mark);
 
         this.app.showView(View.EDIT_MARK);
+    }
+
+    @Override
+    public void entered() {
+        drawChart();
+        this.subject.getMarks().addListener((InvalidationListener) event -> drawChart());
+    }
+
+    private void drawChart() {
+        lineChart.getData().clear();
+        categoryAxis.getCategories().clear();
+        categoryAxis.setCategories(this.subject.getMarks().stream().sorted(Comparator.comparing(Mark::getDate)).map(Mark::getName).collect(Collectors.toCollection(FXCollections::observableArrayList)));
+
+        XYChart.Series<String, Float> series = new XYChart.Series<>();
+        series.getData().addAll(this.subject.getMarks().sorted(Comparator.comparing(Mark::getDate)).stream()
+                .map(mark -> new XYChart.Data<>(mark.getName(), mark.getValue()))
+                .collect(Collectors.toList()));
+        lineChart.getData().add(series);
     }
 
     /**

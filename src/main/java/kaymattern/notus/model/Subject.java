@@ -15,7 +15,12 @@ public class Subject {
 
     private final int id;
     private StringProperty name;
-    private ObservableList<Mark> marks = FXCollections.observableArrayList(mark -> new Observable[] { mark.valueProperty(), mark.weightProperty() });
+    private ObservableList<Mark> marks = FXCollections.observableArrayList(mark -> new Observable[] {
+            mark.valueProperty(),
+            mark.weightProperty(),
+            mark.dateProperty(),
+            mark.nameProperty()
+    });
 
     /**
      * Construnctor.
