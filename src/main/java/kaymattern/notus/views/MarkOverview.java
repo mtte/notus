@@ -4,6 +4,7 @@ import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
@@ -53,6 +54,8 @@ public class MarkOverview implements NotusController, Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         container.prefWidthProperty().bind(root.widthProperty());
         content.prefWidthProperty().bind(container.widthProperty());
+        markDistribution.prefWidthProperty().bind(container.widthProperty().divide(2));
+        weightDistribution.prefWidthProperty().bind(container.widthProperty().divide(2));
 
         initializeTableView();
     }
@@ -86,6 +89,10 @@ public class MarkOverview implements NotusController, Initializable {
         this.app.showView(View.SUBJECT_OVERVIEW);
     }
 
+    /**
+     * Show edit mark dialog.
+     * @param mark the mark to edit
+     */
     private void edit(Mark mark) {
         EditMark editMarkController = (EditMark) this.app.getControllerOfView(View.EDIT_MARK);
         editMarkController.setData(this.subject, mark);
@@ -95,20 +102,54 @@ public class MarkOverview implements NotusController, Initializable {
 
     @Override
     public void entered() {
-        drawChart();
-        this.subject.getMarks().addListener((InvalidationListener) event -> drawChart());
+        drawCharts();
+        this.subject.getMarks().addListener((InvalidationListener) event -> drawCharts());
     }
 
-    private void drawChart() {
-        lineChart.getData().clear();
-        categoryAxis.getCategories().clear();
-        categoryAxis.setCategories(this.subject.getMarks().stream().sorted(Comparator.comparing(Mark::getDate)).map(Mark::getName).collect(Collectors.toCollection(FXCollections::observableArrayList)));
+    /**
+     * Draws the charts
+     */
+    private void drawCharts() {
+        // clear
+        this.lineChart.getData().clear();
+        this.categoryAxis.getCategories().clear();
+        this.markDistribution.getData().clear();
+        this.weightDistribution.getData().clear();
+
+        // line chart
+        this.categoryAxis.setCategories(this.subject.getMarks()
+                .stream()
+                .sorted(Comparator.comparing(Mark::getDate))
+                .map(Mark::getName)
+                .collect(Collectors.toCollection(FXCollections::observableArrayList)));
 
         XYChart.Series<String, Float> series = new XYChart.Series<>();
-        series.getData().addAll(this.subject.getMarks().sorted(Comparator.comparing(Mark::getDate)).stream()
+        series.getData().addAll(this.subject.getMarks()
+                .sorted(Comparator.comparing(Mark::getDate))
+                .stream()
                 .map(mark -> new XYChart.Data<>(mark.getName(), mark.getValue()))
                 .collect(Collectors.toList()));
-        lineChart.getData().add(series);
+        this.lineChart.getData().add(series);
+
+        // mark distribution
+        this.markDistribution.setData(this.subject.getMarks()
+                .stream()
+                .collect(Collectors.groupingBy(Mark::getValue))
+                .entrySet()
+                .stream()
+                .map(entry -> new PieChart.Data(String.valueOf(entry.getKey()), entry.getValue().size()))
+                .collect(Collectors.toCollection(FXCollections::observableArrayList)));
+        this.markDistribution.setLabelLineLength(10);
+
+        // weight distribution
+        this.weightDistribution.setData(this.subject.getMarks()
+                .stream()
+                .collect(Collectors.groupingBy(Mark::getWeight))
+                .entrySet()
+                .stream()
+                .map(entry -> new PieChart.Data(String.valueOf(entry.getKey()), entry.getValue().size()))
+                .collect(Collectors.toCollection(FXCollections::observableArrayList)));
+        this.weightDistribution.setLabelLineLength(10);
     }
 
     /**

@@ -21,7 +21,7 @@
   <content>
     <AnchorPane fx:id="container">
          <children>
-            <VBox fx:id="content" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="content" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="20.0">
                <children>
                   <HBox alignment="CENTER_LEFT">
                      <children>
@@ -42,6 +42,9 @@
                                  </font>
                               </Tooltip>
                            </tooltip>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
                         </Label>
                         <Label fx:id="titleLabel" text="Notenübersicht">
                            <font>
@@ -94,9 +97,9 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </TableView>
-                  <HBox style="-fx-background-color: #eeee; -fx-border-color: #1f1f1f; -fx-border-radius: 8;">
+                  <HBox style="-fx-background-color: #ededed; -fx-border-color: #4f4f4f; -fx-border-radius: 5;">
                      <VBox.margin>
-                        <Insets bottom="5.0" top="10.0" />
+                        <Insets bottom="5.0" top="15.0" />
                      </VBox.margin>
                      <children>
                         <Label text="Durchschnitt:">
@@ -106,12 +109,18 @@
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
                         <Label fx:id="averageLabel" layoutX="20.0" layoutY="20.0" text="NaN">
                            <font>
                               <Font size="20.0" />
                            </font>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
                         </Label>
                      </children>
                      <padding>
@@ -134,13 +143,19 @@
                         <NumberAxis side="LEFT" />
                      </yAxis>
                   </LineChart>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox>
                      <children>
-                        <PieChart fx:id="markDistribution" title="Notenverteilung" />
-                        <PieChart fx:id="widthDistribution" title="Gewichtungsverteilung" />
+                        <PieChart fx:id="markDistribution" legendVisible="false" prefHeight="300.0" prefWidth="300.0" title="Notenverteilung" />
+                        <PieChart fx:id="weightDistribution" layoutX="10.0" layoutY="10.0" legendVisible="false" prefHeight="300.0" prefWidth="300.0" title="Gewichtsverteilung" />
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
             </VBox>
          </children></AnchorPane>
   </content>
