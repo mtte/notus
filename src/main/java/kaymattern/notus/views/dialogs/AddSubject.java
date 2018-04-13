@@ -19,7 +19,7 @@ public class AddSubject extends AbstractDialogController {
         String name = this.nameTextField.getText();
         getApp().getDataAccessor().createSubject(name);
         close();
-        getApp().showAlert(Alert.AlertType.INFORMATION, "Status", "Fach " + name + " wurde hinzugefügt", null);
+        getApp().showAlert(Alert.AlertType.INFORMATION, "Status", "Fach " + name + " wurde hinzugefuegt", null);
     }
 
     @Override

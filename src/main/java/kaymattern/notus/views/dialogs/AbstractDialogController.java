@@ -46,7 +46,7 @@ public abstract class AbstractDialogController extends AbstractNotusController {
         if (validationResult.isPresent()) {
             getApp().showAlert(Alert.AlertType.INFORMATION,
                     "Validierung fehlgeschlagen",
-                    "Nicht alle Eingabefelder sind richtig ausgefüllt.",
+                    "Nicht alle Eingabefelder sind richtig ausgefuellt.",
                     validationResult.get());
             return false;
         }

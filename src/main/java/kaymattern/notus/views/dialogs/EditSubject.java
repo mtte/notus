@@ -24,9 +24,9 @@ public class EditSubject extends AbstractDialogController {
     @FXML
     private void delete() {
         boolean delete = getApp().showAlert(Alert.AlertType.CONFIRMATION,
-                "Löschen?",
-                "Willst du wirklich das Fach " + this.subject.getName() + " löschen?",
-                "Alle Noten dieses Faches werden ebenfalls gelöscht.");
+                "Loeschen?",
+                "Willst du wirklich das Fach " + this.subject.getName() + " loeschen?",
+                "Alle Noten dieses Faches werden ebenfalls geloescht.");
 
         if (delete) {
             getApp().getDataAccessor().removeSubject(this.subject);

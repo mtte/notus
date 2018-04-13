@@ -60,8 +60,8 @@ public class EditMark extends AbstractDialogController {
     @FXML
     private void delete() {
         boolean delete = getApp().showAlert(Alert.AlertType.CONFIRMATION,
-                "Löschen?",
-                "Willst du wirklich die Note " + this.mark.getName() + " aus dem Fach " + this.subject.getName() + " löschen?",
+                "Loeschen?",
+                "Willst du wirklich die Note " + this.mark.getName() + " aus dem Fach " + this.subject.getName() + " loeschen?",
                 null);
 
         if (delete) {

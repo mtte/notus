@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 public enum ValidationType {
     NUMBER(ValidationType::filterValidNumbers, "Muss eine Zahl sein: '5', '1.5', etc."),
     TEXT(ValidationType::filterValidStrings, "Text darf nicht leer sein"),
-    NOT_NULL(ValidationType::filterNotNull, "Wert ist nicht gültig");
+    NOT_NULL(ValidationType::filterNotNull, "Wert ist nicht gueltig");
 
     private final Predicate<ObservableValue> filterValidValues;
     private final String message;

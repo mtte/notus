@@ -4,11 +4,11 @@ package kaymattern.notus;
  * Enum to hold all views of Notus.
  */
 public enum View {
-    SUBJECT_OVERVIEW("SubjectOverview", "Fächer Übersicht", false),
-    MARK_OVERVIEW("MarkOverview", "Noten Übersicht", false),
-    ADD_MARK("AddMark", "Note hinzufügen", true),
+    SUBJECT_OVERVIEW("SubjectOverview", "Faecher Uebersicht", false),
+    MARK_OVERVIEW("MarkOverview", "Noten Uebersicht", false),
+    ADD_MARK("AddMark", "Note hinzufuegen", true),
     EDIT_MARK("EditMark", "Note bearbeiten", true),
-    ADD_SUBJECT("AddSubject", "Fach hinzufügen", true),
+    ADD_SUBJECT("AddSubject", "Fach hinzufuegen", true),
     EDIT_SUBJECT("EditSubject", "Fach bearbeiten", true);
 
     private String name;

@@ -41,7 +41,7 @@ public class AddMark extends AbstractDialogController {
 
         getApp().getDataAccessor().createMark(this.subject, name, date, value, weight);
         close();
-        getApp().showAlert(Alert.AlertType.INFORMATION, "Status", "Note wurde hinzugefügt.", null);
+        getApp().showAlert(Alert.AlertType.INFORMATION, "Status", "Note wurde hinzugefuegt.", null);
     }
 
     @Override
