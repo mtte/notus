@@ -120,7 +120,7 @@ public class ViewManager {
      * @return The loaded scene
      */
     private CachedView loadView(View view) {
-        String viewFile = String.format("kaymattern/views/%s%s.fxml",
+        String viewFile = String.format("kaymattern/notus/views/%s%s.fxml",
                 view.isDialog() ? "dialogs/" : "",
                 view.getName());
         try {
