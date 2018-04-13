@@ -29,7 +29,7 @@ import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class MarkOverview implements NotusController, Initializable {
+public class MarkOverview extends AbstractNotusController {
 
     @FXML private Region root;
     @FXML private Region content;
@@ -47,11 +47,10 @@ public class MarkOverview implements NotusController, Initializable {
     @FXML private PieChart markDistribution;
     @FXML private PieChart weightDistribution;
 
-    private App app;
     private Subject subject;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    protected void init() {
         container.prefWidthProperty().bind(root.widthProperty());
         content.prefWidthProperty().bind(container.widthProperty());
         markDistribution.prefWidthProperty().bind(container.widthProperty().divide(2));
@@ -71,22 +70,17 @@ public class MarkOverview implements NotusController, Initializable {
         this.marksTable.setItems(subject.getMarks());
     }
 
-    @Override
-    public void setUp(App app) {
-        this.app = app;
-    }
-
     @FXML
     private void add() {
-        AddMark addMarkController = (AddMark) this.app.getControllerOfView(View.ADD_MARK);
+        AddMark addMarkController = (AddMark) getApp().getControllerOfView(View.ADD_MARK);
         addMarkController.setSubject(this.subject);
 
-        this.app.showView(View.ADD_MARK);
+        getApp().showView(View.ADD_MARK);
     }
 
     @FXML
     private void back() {
-        this.app.showView(View.SUBJECT_OVERVIEW);
+        getApp().showView(View.SUBJECT_OVERVIEW);
     }
 
     /**
@@ -94,10 +88,10 @@ public class MarkOverview implements NotusController, Initializable {
      * @param mark the mark to edit
      */
     private void edit(Mark mark) {
-        EditMark editMarkController = (EditMark) this.app.getControllerOfView(View.EDIT_MARK);
+        EditMark editMarkController = (EditMark) getApp().getControllerOfView(View.EDIT_MARK);
         editMarkController.setData(this.subject, mark);
 
-        this.app.showView(View.EDIT_MARK);
+        getApp().showView(View.EDIT_MARK);
     }
 
     @Override
