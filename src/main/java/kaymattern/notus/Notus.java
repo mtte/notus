@@ -37,6 +37,7 @@ public class Notus extends Application implements App {
         this.viewManager = new ViewManager(this, primaryStage);
         this.viewManager.showView(View.SUBJECT_OVERVIEW);
 
+        primaryStage.sizeToScene();
         primaryStage.show();
     }
 

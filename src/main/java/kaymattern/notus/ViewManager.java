@@ -48,8 +48,14 @@ public class ViewManager {
         if (view.isDialog()) {
             showDialog(scene, title);
         } else {
+            double width = this.stage.getWidth();
+            double height = this.stage.getHeight();
             this.stage.setScene(scene);
             this.stage.setTitle(title);
+
+            // restore previous window size
+            this.stage.setWidth(width);
+            this.stage.setHeight(height);
         }
     }
 
